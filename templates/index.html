@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VidBrief AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🎬 <span>VidBrief AI</span></div>
+</header>
+
+<section class="hero">
+    <h1>
+        Turn Videos into
+        <span class="gradient-text">Smart Transcripts</span><br>
+        & AI Summaries
+    </h1>
+    <p>Upload a video and let AI extract meaning instantly.</p>
+</section>
+
+<form method="POST" enctype="multipart/form-data" id="uploadForm">
+    <div class="upload-card">
+
+        <!-- FIXED UPLOAD BOX -->
+        <label class="upload-box" id="dropZone">
+            <input type="file" name="video" accept="video/*" required id="videoInput">
+
+            <div class="upload-content">
+                <span class="upload-icon">📁</span>
+                <span class="upload-text">
+                    <strong>Click or Drop video here</strong>
+                    <small>MP4, MOV, AVI supported</small>
+                </span>
+            </div>
+        </label>
+
+        <video id="videoPreview" controls hidden></video>
+
+        <div class="loader" id="loader" hidden></div>
+        <p id="loadingText" class="loading-text"></p>
+
+        <button type="submit" class="primary-btn">
+            ✨ Generate AI Summary
+        </button>
+    </div>
+</form>
+
+{% if transcript %}
+<section class="results">
+
+    <div class="confidence">
+        🧠 Transcription Confidence: <strong>92%</strong>
+    </div>
+
+    <div class="grid">
+
+        <div class="card premium-card">
+            <div class="card-header premium-header">
+                <div class="title">📄 Transcript</div>
+                <div class="action-group">
+                    <button class="action-btn" onclick="copyText('transcriptText')">📋 Copy</button>
+                    <button class="action-btn" onclick="downloadText('transcriptText','transcript.txt')">⬇ Download</button>
+                </div>
+            </div>
+
+            <div class="content-box transcript-box" id="transcriptText">
+                {{ transcript }}
+            </div>
+        </div>
+
+        <div class="card premium-card highlight">
+            <div class="card-header premium-header">
+                <div class="title">✨ AI Summary</div>
+                <div class="action-group">
+                    <button class="action-btn" onclick="copyText('summaryText')">📋 Copy</button>
+                    <button class="action-btn" onclick="downloadText('summaryText','summary.txt')">⬇ Download</button>
+                </div>
+            </div>
+
+            <div class="content-box summary-box" id="summaryText">
+                {{ summary }}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endif %}
+
+<footer>
+    Built with ❤️ using Deep Learning
+</footer>
+
+<script>
+const input = document.getElementById("videoInput");
+const preview = document.getElementById("videoPreview");
+const loader = document.getElementById("loader");
+
+input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.hidden = false;
+    }
+});
+
+document.getElementById("uploadForm").addEventListener("submit", () => {
+    loader.hidden = false;
+    document.getElementById("loadingText").innerText =
+        "🎧 Processing → 🧠 Understanding → ✨ Summarizing";
+});
+
+function copyText(id) {
+    navigator.clipboard.writeText(document.getElementById(id).innerText);
+}
+
+function downloadText(id, filename) {
+    const text = document.getElementById(id).innerText;
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+}
+</script>
+
+</body>
+</html>
