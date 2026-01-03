@@ -1,0 +1,16 @@
+# Virtual environment
+venv/
+
+# Uploaded videos
+uploads/
+
+# FFmpeg binaries
+ffmpeg-7.1.1-essentials_build/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
