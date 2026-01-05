@@ -1,6 +1,9 @@
-flask
-torch
-whisper
-transformers
-moviepy
+Flask==3.0.0
+gunicorn==21.2.0
+
+moviepy==1.0.3
+imageio==2.34.0
+imageio-ffmpeg==0.4.9
 numpy
+requests
+
